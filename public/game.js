@@ -8,15 +8,18 @@ let game = new Phaser.Game(gameSettings.width, gameSettings.height, Phaser.AUTO,
 let tracking = false;
 let players;
 let activePlayer;
+let midline;
 
 function preload() {
   game.load.image("background", "assets/background.png");
   game.load.image("player", "assets/sprites/blackcircle.png");
+  game.load.image("midline", "assets/grayline.png");
 }
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.add.sprite(0, 0, "background");
+  midline = game.add.sprite(0, game.world.centerY - 2, "midline");
 
   players = game.add.group();
   players.enableBody = true;
