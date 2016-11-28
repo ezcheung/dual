@@ -23,11 +23,18 @@ function create() {
 
   players = game.add.group();
   players.enableBody = true;
+
   let p1 = players.create(game.world.centerX, game.world.centerY + gameSettings.height / 4, "player");
   p1.inputEnabled = true;
   game.physics.arcade.enable(p1);
   p1.body.collideWorldBounds = true;
   p1.events.onInputDown.add(setActivePlayer, this);
+
+  let p2 = players.create(game.world.centerX, game.world.centerY - gameSettings.height / 4, "player");
+  p2.inputEnabled = true;
+  game.physics.arcade.enable(p2);
+  p2.body.collideWorldBounds = true;
+  p2.events.onInputDown.add(setActivePlayer, this);
 
 }
 
@@ -36,8 +43,12 @@ function update() {
     activePlayer = undefined;
   }
   if(activePlayer) {
-    activePlayer.x = game.input.x;
-    activePlayer.y = game.input.y;
+    let xDiff = game.input.x - activePlayer.x;
+    let yDiff = game.input.y - activePlayer.y;
+    players.forEach(p => {
+      p.x = p.x + xDiff;
+      p.y = p.y + yDiff;
+    })
   }
 }
 
