@@ -11,7 +11,8 @@ function preload() {
 }
 
 function create() {
-
+  game.physics.startSystem(Phaser.Physics.ARCADE);
+  game.add.sprite(0, 0, "background");
 }
 
 function update() {
