@@ -1,6 +1,7 @@
 let gameSettings = {
   width: 800,
   height: 600,
+  numPlayers: 2, //not used yet, but potentially for the future?
 };
 
 let game = new Phaser.Game(gameSettings.width, gameSettings.height, Phaser.AUTO, '', { preload: preload, create: create, update: update });
@@ -18,9 +19,11 @@ function create() {
   game.add.sprite(0, 0, "background");
 
   players = game.add.group();
-  let p1 = players.create(game.world.centerX, game.world.centerY, "player");
   players.enableBody = true;
+  let p1 = players.create(game.world.centerX, game.world.centerY + gameSettings.height / 4, "player");
   p1.inputEnabled = true;
+  game.physics.arcade.enable(p1);
+  p1.body.collideWorldBounds = true;
   p1.events.onInputDown.add(setActivePlayer, this);
 
 }
@@ -31,6 +34,7 @@ function update() {
   }
   if(activePlayer) {
     activePlayer.x = game.input.x;
+    activePlayer.y = game.input.y;
   }
 }
 
