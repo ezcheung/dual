@@ -24,6 +24,7 @@ function create() {
   */
   game.add.sprite(0, 0, "background");
   midline = game.add.sprite(0, game.world.centerY - 2, "midline");
+  midline.enableBody = true;
 
   /*
   * Set players as a new group, as there are multiple
@@ -32,24 +33,27 @@ function create() {
   players = game.add.group();
   players.enableBody = true;
 
-  // 1st player object creation
+  // Player objects creation
   let p1 = players.create(game.world.centerX, game.world.centerY + gameSettings.height / 4, "player");
-  p1.inputEnabled = true;
-  game.physics.arcade.enable(p1);
-  p1.body.collideWorldBounds = true;
-  p1.events.onInputDown.add(setActivePlayer, this);
-
-  // 2nd player object creation
+  p1.maxY = gameSettings.height;
+  p1.minY = midline.y;
   let p2 = players.create(game.world.centerX, game.world.centerY - gameSettings.height / 4, "player");
-  p2.inputEnabled = true;
-  game.physics.arcade.enable(p2);
-  p2.body.collideWorldBounds = true;
-  p2.events.onInputDown.add(setActivePlayer, this);
+  p2.maxY = midline.y;
+  p2.minY = 0;
+  players.forEach(p => {    
+    p.inputEnabled = true;
+    game.physics.arcade.enable(p);
+    p.body.collideWorldBounds = true;
+    p.events.onInputDown.add(setActivePlayer, this);
+  })
 
 }
 
 function update() {
 
+  players.forEach(p => {
+    game.physics.arcade.collide(p, midline);
+  })
   // If mouse is released, stop tracking movement
   if(game.input.mousePointer.isUp) {
     activePlayer = undefined;
@@ -60,8 +64,10 @@ function update() {
     let xDiff = game.input.x - activePlayer.x;
     let yDiff = game.input.y - activePlayer.y;
     players.forEach(p => {
-      p.x = p.x + xDiff;
-      p.y = p.y + yDiff;
+      let newX = p.x + xDiff;
+      let newY = p.y + yDiff;
+      p.x = newX;
+      p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
     })
   }
 }
