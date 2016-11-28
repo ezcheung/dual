@@ -18,18 +18,28 @@ function preload() {
 
 function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
+
+  /*
+  * Add background
+  */
   game.add.sprite(0, 0, "background");
   midline = game.add.sprite(0, game.world.centerY - 2, "midline");
+
+  /*
+  * Set players as a new group, as there are multiple
+  */
 
   players = game.add.group();
   players.enableBody = true;
 
+  // 1st player object creation
   let p1 = players.create(game.world.centerX, game.world.centerY + gameSettings.height / 4, "player");
   p1.inputEnabled = true;
   game.physics.arcade.enable(p1);
   p1.body.collideWorldBounds = true;
   p1.events.onInputDown.add(setActivePlayer, this);
 
+  // 2nd player object creation
   let p2 = players.create(game.world.centerX, game.world.centerY - gameSettings.height / 4, "player");
   p2.inputEnabled = true;
   game.physics.arcade.enable(p2);
@@ -39,9 +49,13 @@ function create() {
 }
 
 function update() {
+
+  // If mouse is released, stop tracking movement
   if(game.input.mousePointer.isUp) {
     activePlayer = undefined;
   }
+
+  // Move players, following mouse movement
   if(activePlayer) {
     let xDiff = game.input.x - activePlayer.x;
     let yDiff = game.input.y - activePlayer.y;
