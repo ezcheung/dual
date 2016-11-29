@@ -12,6 +12,9 @@ let midline;
 let enemies;
 let enemyTypes = {};
 let alive = true;
+let spacebar;
+let p1;
+let p2;
 
 // Declare enemy subtypes
 let eBasic;
@@ -25,7 +28,10 @@ function preload() {
 }
 
 function create() {
+
+  // Set up game environment (engine, keys, etc.)
   game.physics.startSystem(Phaser.Physics.ARCADE);
+  spacebar = game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
 
   /*
   * Add background
@@ -42,10 +48,10 @@ function create() {
   players.enableBody = true;
 
   // Player objects creation
-  let p1 = players.create(game.world.centerX, game.world.centerY + gameSettings.height / 4, "player");
+  p1 = players.create(game.world.centerX, game.world.centerY + gameSettings.height / 4, "player");
   p1.maxY = gameSettings.height;
   p1.minY = midline.y;
-  let p2 = players.create(game.world.centerX, game.world.centerY - gameSettings.height / 4, "player");
+  p2 = players.create(game.world.centerX, game.world.centerY - gameSettings.height / 4, "player");
   p2.maxY = midline.y;
   p2.minY = 0;
   players.forEach(p => {    
@@ -99,6 +105,10 @@ function update() {
     for(let i in enemyTypes) {
       game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
     }
+  } else {
+    if(spacebar.isDown) {
+      restartGame();
+    }
   }
 }
 
@@ -109,4 +119,15 @@ function setActivePlayer(player) {
 function die(player, enemy) {
   alive = false;
   activePlayer = undefined;
+}
+
+function restartGame() {
+  p1.x = game.world.centerX;
+  p1.y = game.world.centerY + gameSettings.height / 4;
+  p2.x = game.world.centerX;
+  p2.y = game.world.centerY - gameSettings.height / 4;
+  for (let i in enemyTypes) {
+    enemyTypes[i].forEach(e => {e.kill()});
+  }
+  alive = true;
 }
