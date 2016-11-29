@@ -15,6 +15,7 @@ let alive = true;
 let spacebar;
 let p1;
 let p2;
+//let magicPotion
 // declare score
 let score=0;
 let timer;
@@ -28,6 +29,7 @@ function preload() {
   game.load.image("player", "assets/sprites/blackcircle.png");
   game.load.image("midline", "assets/grayline.png");
   game.load.image("eBasic", "assets/sprites/redcircle.png");
+  //goad.load.image("magic", "assests/sprites/purpledot.png")
 
 }
 
@@ -200,10 +202,11 @@ function restartGame() {
     enemyTypes[i].forEach(e => {e.kill()});
   }
   alive = true;
+  score = 0;
 }
 
 function updateScore(){
-  if(alive === true){
+  if(alive){
     score++
   }
 }
