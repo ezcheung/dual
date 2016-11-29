@@ -11,10 +11,15 @@ let activePlayer;
 let midline;
 let enemies;
 
+// Declare enemy subtypes
+let eBasic;
+
+
 function preload() {
   game.load.image("background", "assets/background.png");
   game.load.image("player", "assets/sprites/blackcircle.png");
   game.load.image("midline", "assets/grayline.png");
+  game.load.image("eBasic", "assets/sprites/redcircle.png");
 }
 
 function create() {
@@ -52,7 +57,15 @@ function create() {
   * Make big enemies group, which will be a group of groups
   */
   enemies = game.add.group();
+
+  /*
+  * Create enemy subgroups
+  * Start all of them with the letter e
+  */
   
+  eBasic = game.add.group();
+  enemies.add(eBasic);
+
 }
 
 function update() {
