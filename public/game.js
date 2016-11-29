@@ -4,7 +4,7 @@ let gameSettings = {
   numPlayers: 2, //not used yet, but potentially for the future?
 };
 
-let game = new Phaser.Game(gameSettings.width, gameSettings.height, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+let game = new Phaser.Game(gameSettings.width, gameSettings.height, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 let tracking = false;
 let players;
 let activePlayer;
@@ -15,6 +15,9 @@ let alive = true;
 let spacebar;
 let p1;
 let p2;
+// declare score
+let score=0;
+let timer;
 
 // Declare enemy subtypes
 let eBasic;
@@ -25,6 +28,7 @@ function preload() {
   game.load.image("player", "assets/sprites/blackcircle.png");
   game.load.image("midline", "assets/grayline.png");
   game.load.image("eBasic", "assets/sprites/redcircle.png");
+
 }
 
 function create() {
@@ -79,7 +83,15 @@ function create() {
   for(let i in enemyTypes) {
     enemies.add(enemyTypes[i]);
   }
+
+  //set time for score
+  //create time
+  timer = game.time.create(false);
+  //set a timerevent to occur after 3 seconds
+  timer.loop(1000, updateScore, this);
+  timer.start();
 }
+
 
 function update() {
 
@@ -146,4 +158,14 @@ function restartGame() {
     enemyTypes[i].forEach(e => {e.kill()});
   }
   alive = true;
+}
+
+function updateScore(){
+  if(alive === true){
+  score++
+}
+  console.log("SCORE IS:", score)
+}
+function render(){
+  game.debug.text("Score: " + score, 32,64)
 }
