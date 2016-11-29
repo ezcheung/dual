@@ -99,13 +99,55 @@ function update() {
 
     // Roll for enemies
     let coin = Math.random() * 100;
-    if (coin > 85) {
-      // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
-      let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
-      newEnemy.outOfBoundsKill = true;
-      let xVel = (Math.random() * 2 - 1) * 500;
-      newEnemy.body.velocity.x = xVel;
-      newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+    if(score<10){
+      if (coin > 98) {
+        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
+        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
+        newEnemy.outOfBoundsKill = true;
+        let xVel = (Math.random() * 2 - 1) * 500;
+        newEnemy.body.velocity.x = xVel;
+        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+      }
+    }
+    if(score>=10 &&score<25){
+      if (coin > 94) {
+        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
+        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
+        newEnemy.outOfBoundsKill = true;
+        let xVel = (Math.random() * 2 - 1) * 500;
+        newEnemy.body.velocity.x = xVel;
+        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+      }
+    }
+    if(score>=25 && score<50){
+      if (coin > 90) {
+        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
+        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
+        newEnemy.outOfBoundsKill = true;
+        let xVel = (Math.random() * 2 - 1) * 500;
+        newEnemy.body.velocity.x = xVel;
+        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+      }
+    }
+      if(score>=50 && score<100){
+      if (coin > 85) {
+        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
+        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
+        newEnemy.outOfBoundsKill = true;
+        let xVel = (Math.random() * 2 - 1) * 500;
+        newEnemy.body.velocity.x = xVel;
+        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+      }
+    }
+      if(score>=100){
+      if (coin > 80) {
+        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
+        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
+        newEnemy.outOfBoundsKill = true;
+        let xVel = (Math.random() * 2 - 1) * 500;
+        newEnemy.body.velocity.x = xVel;
+        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+      }
     }
     // If mouse is released, stop tracking movement
     if(game.input.mousePointer.isUp) {
