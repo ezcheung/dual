@@ -204,10 +204,13 @@ function restartGame() {
 
 function updateScore(){
   if(alive === true){
-  score++
+    score++
+  }
 }
-  console.log("SCORE IS:", score)
-}
+
 function render(){
-  game.debug.text("Score: " + score, 32,64)
+  game.debug.text("Score: " + score, 16,32)
+  if(!alive){
+    game.debug.text("Press spacebar to restart", 300,250)
+  }
 }
