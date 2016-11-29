@@ -10,6 +10,7 @@ let players;
 let activePlayer;
 let midline;
 let enemies;
+let enemyTypes = {};
 
 // Declare enemy subtypes
 let eBasic;
@@ -57,22 +58,27 @@ function create() {
   * Make big enemies group, which will be a group of groups
   */
   enemies = game.add.group();
+  game.physics.arcade.enable(enemies);
+  enemies.enableBody = true;
 
   /*
   * Create enemy subgroups
-  * Start all of them with the letter e
   */
   
-  eBasic = game.add.group();
-  enemies.add(eBasic);
-
+  enemyTypes.basic = game.add.group();
+  enemyTypes.basic.enableBody = true;
+  let e = enemyTypes.basic.create(50, 50, "eBasic");
+  game.physics.arcade.enable(e);
+  
+  for(let i in enemyTypes) {
+    enemies.add(enemyTypes[i]);
+  }
 }
 
 function update() {
 
-  players.forEach(p => {
-    game.physics.arcade.collide(p, midline);
-  })
+  enemies.x += 1;
+
   // If mouse is released, stop tracking movement
   if(game.input.mousePointer.isUp) {
     activePlayer = undefined;
@@ -89,8 +95,16 @@ function update() {
       p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
     })
   }
+
+  for(let i in enemyTypes) {
+    game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+  }
 }
 
 function setActivePlayer(player) {
   activePlayer = player;
+}
+
+function die(player, enemy) {
+  console.log("Collided with enemy");
 }
