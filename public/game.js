@@ -9,6 +9,7 @@ let tracking = false;
 let players;
 let activePlayer;
 let midline;
+let enemies;
 
 function preload() {
   game.load.image("background", "assets/background.png");
@@ -47,6 +48,11 @@ function create() {
     p.events.onInputDown.add(setActivePlayer, this);
   })
 
+  /*
+  * Make big enemies group, which will be a group of groups
+  */
+  enemies = game.add.group();
+  
 }
 
 function update() {
