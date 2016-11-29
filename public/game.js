@@ -11,6 +11,7 @@ let activePlayer;
 let midline;
 let enemies;
 let enemyTypes = {};
+let alive = true;
 
 // Declare enemy subtypes
 let eBasic;
@@ -77,27 +78,27 @@ function create() {
 
 function update() {
 
-  enemies.x += 1;
+  if (alive) {
+    // If mouse is released, stop tracking movement
+    if(game.input.mousePointer.isUp) {
+      activePlayer = undefined;
+    }
 
-  // If mouse is released, stop tracking movement
-  if(game.input.mousePointer.isUp) {
-    activePlayer = undefined;
-  }
+    // Move players, following mouse movement
+    if(activePlayer) {
+      let xDiff = game.input.x - activePlayer.x;
+      let yDiff = game.input.y - activePlayer.y;
+      players.forEach(p => {
+        let newX = p.x + xDiff;
+        let newY = p.y + yDiff;
+        p.x = newX;
+        p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
+      })
+    }
 
-  // Move players, following mouse movement
-  if(activePlayer) {
-    let xDiff = game.input.x - activePlayer.x;
-    let yDiff = game.input.y - activePlayer.y;
-    players.forEach(p => {
-      let newX = p.x + xDiff;
-      let newY = p.y + yDiff;
-      p.x = newX;
-      p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
-    })
-  }
-
-  for(let i in enemyTypes) {
-    game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+    for(let i in enemyTypes) {
+      game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+    }
   }
 }
 
@@ -106,5 +107,6 @@ function setActivePlayer(player) {
 }
 
 function die(player, enemy) {
-  console.log("Collided with enemy");
+  alive = false;
+  activePlayer = undefined;
 }
