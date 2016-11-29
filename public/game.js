@@ -74,8 +74,7 @@ function create() {
   
   enemyTypes.basic = game.add.group();
   enemyTypes.basic.enableBody = true;
-  let e = enemyTypes.basic.create(50, 50, "eBasic");
-  game.physics.arcade.enable(e);
+  game.physics.arcade.enable(enemyTypes.basic);
   
   for(let i in enemyTypes) {
     enemies.add(enemyTypes[i]);
@@ -85,6 +84,17 @@ function create() {
 function update() {
 
   if (alive) {
+
+    // Roll for enemies
+    let coin = Math.random() * 100;
+    if (coin > 85) {
+      // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
+      let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
+      newEnemy.outOfBoundsKill = true;
+      let xVel = (Math.random() * 2 - 1) * 500;
+      newEnemy.body.velocity.x = xVel;
+      newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+    }
     // If mouse is released, stop tracking movement
     if(game.input.mousePointer.isUp) {
       activePlayer = undefined;
@@ -119,6 +129,12 @@ function setActivePlayer(player) {
 function die(player, enemy) {
   alive = false;
   activePlayer = undefined;
+  for (let i in enemyTypes) {
+    enemyTypes[i].forEach(e => {
+      e.body.velocity.x = 0;
+      e.body.velocity.y = 0;
+    })
+  }
 }
 
 function restartGame() {
