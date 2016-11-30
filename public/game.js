@@ -116,9 +116,15 @@ function create() {
 function update() {
 
   if (alive) {
+<<<<<<< HEAD
     let magicness = Math.random() * 100;
     if(magicness>99){
       let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
+=======
+
+    for(let i in enemyTypes) {
+      game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+>>>>>>> 5f1dcbde8cde93425ed1641fd57f49d4335378fa
     }
     // Roll for enemies
     let coin = Math.random() * 100;
@@ -188,6 +194,7 @@ function update() {
         p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
       })
     }
+<<<<<<< HEAD
      for(let i in magicTypes){
         game.physics.arcade.overlap(players, magicTypes[i], immune, null, this);
        }
@@ -197,6 +204,9 @@ function update() {
       }
     }
  
+=======
+
+>>>>>>> 5f1dcbde8cde93425ed1641fd57f49d4335378fa
   } else {
     if(spacebar.isDown) {
       restartGame();
@@ -235,6 +245,7 @@ function restartGame() {
   p1.y = game.world.centerY + gameSettings.height / 4;
   p2.x = game.world.centerX;
   p2.y = game.world.centerY - gameSettings.height / 4;
+  score = 0;
   for (let i in enemyTypes) {
     enemyTypes[i].forEach(e => {e.kill()});
   }
