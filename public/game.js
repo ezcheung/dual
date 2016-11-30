@@ -97,6 +97,9 @@ function update() {
 
   if (alive) {
 
+    for(let i in enemyTypes) {
+      game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+    }
     // Roll for enemies
     let coin = Math.random() * 100;
     if (coin > 85) {
@@ -124,9 +127,6 @@ function update() {
       })
     }
 
-    for(let i in enemyTypes) {
-      game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
-    }
   } else {
     if(spacebar.isDown) {
       restartGame();
