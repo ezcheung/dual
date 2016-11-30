@@ -154,6 +154,7 @@ function restartGame() {
   p1.y = game.world.centerY + gameSettings.height / 4;
   p2.x = game.world.centerX;
   p2.y = game.world.centerY - gameSettings.height / 4;
+  score = 0;
   for (let i in enemyTypes) {
     enemyTypes[i].forEach(e => {e.kill()});
   }
