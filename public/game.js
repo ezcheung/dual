@@ -116,15 +116,9 @@ function create() {
 function update() {
 
   if (alive) {
-<<<<<<< HEAD
     let magicness = Math.random() * 100;
     if(magicness>99){
       let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
-=======
-
-    for(let i in enemyTypes) {
-      game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
->>>>>>> 5f1dcbde8cde93425ed1641fd57f49d4335378fa
     }
     // Roll for enemies
     let coin = Math.random() * 100;
@@ -194,19 +188,14 @@ function update() {
         p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
       })
     }
-<<<<<<< HEAD
-     for(let i in magicTypes){
-        game.physics.arcade.overlap(players, magicTypes[i], immune, null, this);
-       }
+    for(let i in magicTypes){
+      game.physics.arcade.overlap(players, magicTypes[i], immune, null, this);
+    }
     if(!immunity){
       for(let i in enemyTypes) {
         game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
       }
     }
- 
-=======
-
->>>>>>> 5f1dcbde8cde93425ed1641fd57f49d4335378fa
   } else {
     if(spacebar.isDown) {
       restartGame();
@@ -214,16 +203,17 @@ function update() {
   }
 }
 function immune(player, magicPotion){
-  immunity = true 
-  let reoccur = true
-  numberHit += 4
-  console.log('immune', immunity)
-  magicPotion.kill()
+  immunity = true;
+  let reoccur = true; // ?
+  numberHit += 4;
+  console.log('immune', immunity);
+  magicPotion.kill();
   game.time.events.add(Phaser.Timer.SECOND * numberHit, setBack, this).autoDestroy = true;
 }
+
 function setBack(){
-  immunity = false
-  numberHit = 0
+  immunity = false;
+  numberHit = 0;
 }
 function setActivePlayer(player) {
   activePlayer = player;
