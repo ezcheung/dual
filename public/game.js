@@ -15,7 +15,11 @@ let alive = true;
 let spacebar;
 let p1;
 let p2;
-//let magicPotion
+//make potions and subgroups
+let magicPotion;
+let magicTypes = {};
+let mBasic;
+let immunity= false;
 // declare score
 let score=0;
 let timer;
@@ -24,12 +28,12 @@ let timer;
 let eBasic;
 
 
-function preload() {
+function preload() {  
   game.load.image("background", "assets/background.png");
   game.load.image("player", "assets/sprites/blackcircle.png");
   game.load.image("midline", "assets/grayline.png");
   game.load.image("eBasic", "assets/sprites/redcircle.png");
-  //goad.load.image("magic", "assests/sprites/purpledot.png")
+  game.load.image("mBasic", "assets/sprites/blue-square.png")
 
 }
 
@@ -86,6 +90,19 @@ function create() {
     enemies.add(enemyTypes[i]);
   }
 
+  //add magic potions
+  magicPotion = game.add.group();
+  game.physics.arcade.enable(magicPotion);
+  magicPotion.enableBody= true;
+
+   magicTypes.basic = game.add.group();
+  magicTypes.basic.enableBody = true;
+  game.physics.arcade.enable(magicTypes.basic);
+  
+  for(let i in magicTypes) {
+    magicPotion.add(magicTypes[i]);
+  }
+
   //set time for score
   //create time
   timer = game.time.create(false);
@@ -98,7 +115,10 @@ function create() {
 function update() {
 
   if (alive) {
-
+    let magicness = Math.random() * 100;
+    if(magicness>99.9){
+      let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
+    }
     // Roll for enemies
     let coin = Math.random() * 100;
     if(score<10){
@@ -167,17 +187,30 @@ function update() {
         p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
       })
     }
-
-    for(let i in enemyTypes) {
-      game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+     for(let i in magicTypes){
+        game.physics.arcade.overlap(players, magicTypes[i], immune, null, this);
+       }
+    if(!immunity){
+      for(let i in enemyTypes) {
+        game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+      }
     }
+ 
   } else {
     if(spacebar.isDown) {
       restartGame();
     }
   }
 }
-
+function immune(player, magicPotion){
+  immunity = true 
+  console.log('immune', immunity)
+  magicPotion.kill()
+  game.time.events.add(Phaser.Timer.SECOND * 4, setBack, this).autoDestroy = true;
+}
+function setBack(){
+  immunity = false
+}
 function setActivePlayer(player) {
   activePlayer = player;
 }
@@ -200,6 +233,9 @@ function restartGame() {
   p2.y = game.world.centerY - gameSettings.height / 4;
   for (let i in enemyTypes) {
     enemyTypes[i].forEach(e => {e.kill()});
+  }
+  for( let i in magicTypes){
+    magicTypes[i].forEach(e => {e.kill()});
   }
   alive = true;
   score = 0;
