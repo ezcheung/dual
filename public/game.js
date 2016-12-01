@@ -124,42 +124,22 @@ function update() {
     let coin = Math.random() * 100;
     if(score<10){
       if (coin > 98) {
-        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
-        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
-        newEnemy.outOfBoundsKill = true;
-        let xVel = (Math.random() * 2 - 1) * 500;
-        newEnemy.body.velocity.x = xVel;
-        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+        spawnEnemy("eBasic");
       }
     }
     if(score>=10 &&score<25){
       if (coin > 94) {
-        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
-        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
-        newEnemy.outOfBoundsKill = true;
-        let xVel = (Math.random() * 2 - 1) * 500;
-        newEnemy.body.velocity.x = xVel;
-        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+        spawnEnemy("eBasic");
       }
     }
     if(score>=25 && score<50){
       if (coin > 90) {
-        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
-        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
-        newEnemy.outOfBoundsKill = true;
-        let xVel = (Math.random() * 2 - 1) * 500;
-        newEnemy.body.velocity.x = xVel;
-        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+        spawnEnemy("eBasic");
       }
     }
       if(score>=50 && score<100){
       if (coin > 85) {
-        // let spawnWall = [Math.floor(Math.random() * 2), Math.floor(Math.random() * 2)];    
-        let newEnemy = enemyTypes.basic.create(Math.random() * gameSettings.width, 0, "eBasic"); 
-        newEnemy.outOfBoundsKill = true;
-        let xVel = (Math.random() * 2 - 1) * 500;
-        newEnemy.body.velocity.x = xVel;
-        newEnemy.body.velocity.y = Math.sqrt(500 * 500 - xVel * xVel);
+        spawnEnemy("eBasic");
       }
     }
       if(score>=100){
@@ -251,6 +231,28 @@ function updateScore(){
     score++
   }
 }
+
+function spawnEnemy(type) {
+  let angle = Math.random() * Math.PI * 2;
+  let u = Math.cos(angle);
+  let v = Math.sin(angle);
+  let r = Math.sqrt(gameSettings.width * gameSettings.width + gameSettings.height * gameSettings.height) / 2;
+  // x and y lie on a circle surrounding the grid
+  let x = u * r + gameSettings.width/2;
+  let y = v * r + gameSettings.height/2;
+  // Set coordinates in bounds
+  x = x > gameSettings.width ? gameSettings.width : x < 0 ? 0 : x;
+  y = y > gameSettings.height ? gameSettings.height : y < 0 ? 0 : y;
+
+  console.log("X: ", x);
+  console.log("Y: ", y);
+  let newEnemy = enemyTypes.basic.create(x, y, type); 
+  newEnemy.outOfBoundsKill = true;
+  let tangent = (Math.random() * 2 - 1) * 500;
+  let rad = Math.sqrt(500 * 500 - tangent * tangent); 
+  newEnemy.body.velocity.x = tangent * v - rad * u;
+  newEnemy.body.velocity.y = - tangent * u - rad * v;
+} 
 
 function render(){
   game.debug.text("Score: " + score, 16,32)
