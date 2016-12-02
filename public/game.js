@@ -20,6 +20,7 @@ let magicPotion;
 let magicTypes = {};
 let mBasic;
 let immunity= false;
+let immuneTime = 0;
 // declare score
 let score=0;
 let timer;
@@ -116,7 +117,7 @@ function update() {
 
   if (alive) {
     let magicness = Math.random() * 100;
-    if(magicness>99.9){
+    if(magicness>10){
       let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
     }
     // Roll for enemies
@@ -157,9 +158,11 @@ function update() {
   }
 }
 function immune(player, magicPotion){
+  immuneTime = game.time.create();
   immunity = true;
   magicPotion.kill();
   game.time.events.add(Phaser.Timer.SECOND * 4, setBack, this).autoDestroy = true;
+  immuneTime.start();
 }
 
 function setBack(){
@@ -230,6 +233,6 @@ function render(){
     game.debug.text("Press spacebar to restart", 300,250)
   }
   if(immunity){
-    game.debug.text("Immunity only last 4 seconds....", 300, 590)
+    game.debug.text(`Immunity: ${4000 - immuneTime.ms}`, 300, 590)
   }
 }
