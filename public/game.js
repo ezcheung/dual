@@ -117,7 +117,7 @@ function update() {
 
   if (alive) {
     let magicness = Math.random() * 100;
-    if(magicness>10){
+    if(magicness>99.9){
       let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
     }
     // Roll for enemies
@@ -233,6 +233,6 @@ function render(){
     game.debug.text("Press spacebar to restart", 300,250)
   }
   if(immunity){
-    game.debug.text(`Immunity: ${4000 - immuneTime.ms}`, 300, 590)
+    game.debug.text(`Immunity: ${Math.ceil((4000 - immuneTime.ms)/1000)}`, 300, 590)
   }
 }
