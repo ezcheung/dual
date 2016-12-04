@@ -141,11 +141,11 @@ function update() {
         p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
       })
     }
-    if(!immunity){
+    // if(!immunity){
       for(let i in magicTypes){
         game.physics.arcade.overlap(players, magicTypes[i], immune, null, this);
       }
-    } 
+    // } 
     if(!immunity){
       for(let i in enemyTypes) {
         game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
@@ -166,7 +166,7 @@ function immune(player, magicPotion){
 }
 
 function setBack(){
-  immunity = false;
+  immunity = immuneTime.ms === undefined || immuneTime.ms < 4000;
 }
 function setActivePlayer(player) {
   activePlayer = player;
