@@ -233,6 +233,6 @@ function render(){
     game.debug.text("Press spacebar to restart", 300,250)
   }
   if(immunity){
-    game.debug.text(`Immunity: ${Math.ceil((4000 - immuneTime.ms)/1000)}`, 300, 590)
+    game.debug.text(`Immunity: ${Math.ceil((4000 - immuneTime.ms)/1000)} seconds`, 300, 590)
   }
 }
