@@ -116,7 +116,7 @@ function create() {
 function update() {
 
   if (alive) {
-    immunity = immuneTime.ms === undefined || immuneTime.ms < 4000;
+    immunity = immuneTime.ms < 4000;
     let magicness = Math.random() * 100;
     if(magicness>99){
       let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
