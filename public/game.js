@@ -116,8 +116,9 @@ function create() {
 function update() {
 
   if (alive) {
+    immunity = immuneTime.ms === undefined || immuneTime.ms < 4000;
     let magicness = Math.random() * 100;
-    if(magicness>99.9){
+    if(magicness>99){
       let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
     }
     // Roll for enemies
@@ -159,15 +160,20 @@ function update() {
 }
 function immune(player, magicPotion){
   immuneTime = game.time.create();
+  immuneTime.start();
   immunity = true;
   magicPotion.kill();
-  game.time.events.add(Phaser.Timer.SECOND * 4, setBack, this).autoDestroy = true;
-  immuneTime.start();
+  // game.time.events.add(Phaser.Timer.SECOND * 4, setBack, this).autoDestroy = true;
 }
 
-function setBack(){
-  immunity = immuneTime.ms === undefined || immuneTime.ms < 4000;
-}
+// function setBack(){
+//   console.log("Setting back");
+//   console.log("immuneTime.ms: ", immuneTime.ms);
+//   immunity = immuneTime.ms === undefined || immuneTime.ms < 4000;
+//   // Kill timer
+//   if (!immunity) immuneTime = undefined;
+// }
+
 function setActivePlayer(player) {
   activePlayer = player;
 }
@@ -217,8 +223,6 @@ function spawnEnemy(type) {
   x = x > gameSettings.width ? gameSettings.width : x < 0 ? 0 : x;
   y = y > gameSettings.height ? gameSettings.height : y < 0 ? 0 : y;
 
-  console.log("X: ", x);
-  console.log("Y: ", y);
   let newEnemy = enemyTypes.basic.create(x, y, type); 
   newEnemy.outOfBoundsKill = true;
   let tangent = (Math.random() * 2 - 1) * 500;
