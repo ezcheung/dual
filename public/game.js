@@ -83,9 +83,9 @@ function create() {
   * Create enemy subgroups
   */
   
-  enemyTypes.basic = game.add.group();
-  enemyTypes.basic.enableBody = true;
-  game.physics.arcade.enable(enemyTypes.basic);
+  enemyTypes.eBasic = game.add.group();
+  enemyTypes.eBasic.enableBody = true;
+  game.physics.arcade.enable(enemyTypes.eBasic);
   
   for(let i in enemyTypes) {
     enemies.add(enemyTypes[i]);
@@ -223,7 +223,7 @@ function spawnEnemy(type) {
   x = x > gameSettings.width ? gameSettings.width : x < 0 ? 0 : x;
   y = y > gameSettings.height ? gameSettings.height : y < 0 ? 0 : y;
 
-  let newEnemy = enemyTypes.basic.create(x, y, type); 
+  let newEnemy = enemyTypes[type].create(x, y, type); 
   newEnemy.outOfBoundsKill = true;
   let tangent = (Math.random() * 2 - 1) * 500;
   let rad = Math.sqrt(500 * 500 - tangent * tangent); 
