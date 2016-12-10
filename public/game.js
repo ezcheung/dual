@@ -184,6 +184,7 @@ function setActivePlayer(player) {
 }
 
 function die(player, enemy) {
+  timer.destroy(); // stop timer
   alive = false;
   activePlayer = undefined;
   for (let i in enemyTypes) {
@@ -196,7 +197,7 @@ function die(player, enemy) {
 
 function restartGame() {
   gameStarted = false;
-  timer.destroy();
+
   p1.x = game.world.centerX;
   p1.y = game.world.centerY + gameSettings.height / 4;
   p2.x = game.world.centerX;
