@@ -8,6 +8,7 @@ let game = new Phaser.Game(gameSettings.width, gameSettings.height, Phaser.AUTO,
 let tracking = false;
 let players;
 let activePlayer;
+let gameStarted = false;
 let midline;
 let enemies;
 let enemyTypes = {};
@@ -103,58 +104,53 @@ function create() {
   for(let i in magicTypes) {
     magicPotion.add(magicTypes[i]);
   }
-
-  //set time for score
-  //create time
-  timer = game.time.create(false);
-  //set a timerevent to occur after 3 seconds
-  timer.loop(1000, updateScore, this);
-  timer.start();
 }
 
 
 function update() {
 
-  if (alive) {
-    immunity = immuneTime.ms < 4000;
-    let magicness = Math.random() * 100;
-    if(magicness>99.9){
-      let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
-    }
-    // Roll for enemies
-    let coin = Math.random() * 100;
-    if(coin < score) {
-      spawnEnemy("eBasic");
-    }
-    // If mouse is released, stop tracking movement
-    if(game.input.mousePointer.isUp) {
-      activePlayer = undefined;
-    }
+  if (gameStarted) {
+    if (alive) {
+      immunity = immuneTime.ms < 4000;
+      let magicness = Math.random() * 100;
+      if(magicness>99.9){
+        let newMagicPotion = magicTypes.basic.create(Math.random() * gameSettings.width,Math.random() * gameSettings.height, "mBasic")
+      }
+      // Roll for enemies
+      let coin = Math.random() * 100;
+      if(coin < score) {
+        spawnEnemy("eBasic");
+      }
+      // If mouse is released, stop tracking movement
+      if(game.input.mousePointer.isUp) {
+        activePlayer = undefined;
+      }
 
-    // Move players, following mouse movement
-    if(activePlayer) {
-      let xDiff = game.input.x - activePlayer.x;
-      let yDiff = game.input.y - activePlayer.y;
-      players.forEach(p => {
-        let newX = p.x + xDiff;
-        let newY = p.y + yDiff;
-        p.x = newX;
-        p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
-      })
-    }
-    // if(!immunity){
-      for(let i in magicTypes){
-        game.physics.arcade.overlap(players, magicTypes[i], immune, null, this);
+      // Move players, following mouse movement
+      if(activePlayer) {
+        let xDiff = game.input.x - activePlayer.x;
+        let yDiff = game.input.y - activePlayer.y;
+        players.forEach(p => {
+          let newX = p.x + xDiff;
+          let newY = p.y + yDiff;
+          p.x = newX;
+          p.y = newY < p.minY ? p.minY : newY < p.maxY ? newY : p.maxY;
+        })
       }
-    // } 
-    if(!immunity){
-      for(let i in enemyTypes) {
-        game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+      // if(!immunity){
+        for(let i in magicTypes){
+          game.physics.arcade.overlap(players, magicTypes[i], immune, null, this);
+        }
+      // } 
+      if(!immunity){
+        for(let i in enemyTypes) {
+          game.physics.arcade.overlap(players, enemyTypes[i], die, null, this);
+        }
       }
-    }
-  } else {
-    if(spacebar.isDown) {
-      restartGame();
+    } else {
+      if(spacebar.isDown) {
+        restartGame();
+      }
     }
   }
 }
@@ -175,6 +171,15 @@ function immune(player, magicPotion){
 // }
 
 function setActivePlayer(player) {
+  if(!gameStarted) {
+    gameStarted = true;
+    //set time for score
+    //create time
+    timer = game.time.create(false);
+    //set a timerevent to occur after 3 seconds
+    timer.loop(1000, updateScore, this);
+    timer.start();
+  }
   activePlayer = player;
 }
 
@@ -190,6 +195,8 @@ function die(player, enemy) {
 }
 
 function restartGame() {
+  gameStarted = false;
+  timer.destroy();
   p1.x = game.world.centerX;
   p1.y = game.world.centerY + gameSettings.height / 4;
   p2.x = game.world.centerX;
