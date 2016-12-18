@@ -219,7 +219,7 @@ function updateScore(){
   }
 }
 
-function spawnEnemy(type) {
+function getSpawnPosition() {
   let angle = Math.random() * Math.PI * 2;
   let u = Math.cos(angle);
   let v = Math.sin(angle);
@@ -230,13 +230,23 @@ function spawnEnemy(type) {
   // Set coordinates in bounds
   x = x > gameSettings.width ? gameSettings.width : x < 0 ? 0 : x;
   y = y > gameSettings.height ? gameSettings.height : y < 0 ? 0 : y;
+  return {
+    u: u,
+    v: v,
+    x: x,
+    y: y
+  };
+}
 
-  let newEnemy = enemyTypes[type].create(x, y, type); 
+function spawnEnemy(type) {
+  
+  let position = getSpawnPosition();
+  let newEnemy = enemyTypes[type].create(position.x, position.y, type); 
   newEnemy.outOfBoundsKill = true;
   let tangent = (Math.random() * 2 - 1) * 500;
   let rad = Math.sqrt(500 * 500 - tangent * tangent); 
-  newEnemy.body.velocity.x = tangent * v - rad * u;
-  newEnemy.body.velocity.y = - tangent * u - rad * v;
+  newEnemy.body.velocity.x = tangent * position.v - rad * position.u;
+  newEnemy.body.velocity.y = - tangent * position.u - rad * position.v;
 } 
 
 function render(){
