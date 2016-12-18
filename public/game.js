@@ -256,23 +256,34 @@ function spawnEnemy(type) {
 }
 
 function spawnBasic() {
+  const speed = 500;
   let position = getSpawnPosition();
   let newEnemy = enemyTypes["eBasic"].create(position.x, position.y, "eBasic"); 
   newEnemy.outOfBoundsKill = true;
-  let tangent = (Math.random() * 2 - 1) * 500;
-  let rad = Math.sqrt(500 * 500 - tangent * tangent); 
+  let tangent = (Math.random() * 2 - 1) * speed;
+  let rad = Math.sqrt(speed * speed - tangent * tangent); 
   newEnemy.body.velocity.x = tangent * position.v - rad * position.u;
   newEnemy.body.velocity.y = - tangent * position.u - rad * position.v;
 }
 
 function spawnZigzag() {
+  const speed = 300;
   let position = getSpawnPosition();
   let newEnemy = enemyTypes["eZigzag"].create(position.x, position.y, "player"); 
   newEnemy.outOfBoundsKill = true;
-  let tangent = (Math.random() * 2 - 1) * 500;
-  let rad = Math.sqrt(500 * 500 - tangent * tangent); 
+  let tangent = (Math.random() * 2 - 1) * speed;
+  let rad = Math.sqrt(speed * speed - tangent * tangent); 
   newEnemy.body.velocity.x = tangent * position.v - rad * position.u;
-  newEnemy.body.velocity.y = - tangent * position.u - rad * position.v; 
+  newEnemy.body.velocity.y = - tangent * position.u - rad * position.v;
+  let zigzag = setInterval(() => {
+    if(!newEnemy.alive) { //  has left the world
+      clearInterval(zigzag);
+    } else if (Math.abs(newEnemy.body.velocity.y) > Math.abs(newEnemy.body.velocity.x)) {
+      newEnemy.body.velocity.x = - newEnemy.body.velocity.x;
+    } else {
+      newEnemy.body.velocity.y = - newEnemy.body.velocity.y;
+    }
+  }, 250)
 }
 
 function getRandom(arr) {
