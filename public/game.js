@@ -88,6 +88,11 @@ function create() {
   enemyTypes.eBasic.enableBody = true;
   enemyTypes.eBasic.spawn = spawnBasic;
   game.physics.arcade.enable(enemyTypes.eBasic);
+
+  enemyTypes.eZigzag = game.add.group();
+  enemyTypes.eZigzag.enableBody = true;
+  enemyTypes.eZigzag.spawn = spawnZigzag;
+  game.physics.arcade.enable(enemyTypes.eZigzag);
   
   for(let i in enemyTypes) {
     enemies.add(enemyTypes[i]);
@@ -258,6 +263,16 @@ function spawnBasic() {
   let rad = Math.sqrt(500 * 500 - tangent * tangent); 
   newEnemy.body.velocity.x = tangent * position.v - rad * position.u;
   newEnemy.body.velocity.y = - tangent * position.u - rad * position.v;
+}
+
+function spawnZigzag() {
+  let position = getSpawnPosition();
+  let newEnemy = enemyTypes["eZigzag"].create(position.x, position.y, "player"); 
+  newEnemy.outOfBoundsKill = true;
+  let tangent = (Math.random() * 2 - 1) * 500;
+  let rad = Math.sqrt(500 * 500 - tangent * tangent); 
+  newEnemy.body.velocity.x = tangent * position.v - rad * position.u;
+  newEnemy.body.velocity.y = - tangent * position.u - rad * position.v; 
 }
 
 function getRandom(arr) {
