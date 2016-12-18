@@ -86,6 +86,7 @@ function create() {
   
   enemyTypes.eBasic = game.add.group();
   enemyTypes.eBasic.enableBody = true;
+  enemyTypes.eBasic.spawn = spawnBasic;
   game.physics.arcade.enable(enemyTypes.eBasic);
   
   for(let i in enemyTypes) {
@@ -119,7 +120,7 @@ function update() {
       // Roll for enemies
       let coin = Math.random() * 100;
       if(coin < score) {
-        spawnEnemy("eBasic");
+        enemyTypes[getRandom(Object.keys(enemyTypes))].spawn();
       }
       // If mouse is released, stop tracking movement
       if(game.input.mousePointer.isUp) {
@@ -247,7 +248,21 @@ function spawnEnemy(type) {
   let rad = Math.sqrt(500 * 500 - tangent * tangent); 
   newEnemy.body.velocity.x = tangent * position.v - rad * position.u;
   newEnemy.body.velocity.y = - tangent * position.u - rad * position.v;
-} 
+}
+
+function spawnBasic() {
+  let position = getSpawnPosition();
+  let newEnemy = enemyTypes["eBasic"].create(position.x, position.y, "eBasic"); 
+  newEnemy.outOfBoundsKill = true;
+  let tangent = (Math.random() * 2 - 1) * 500;
+  let rad = Math.sqrt(500 * 500 - tangent * tangent); 
+  newEnemy.body.velocity.x = tangent * position.v - rad * position.u;
+  newEnemy.body.velocity.y = - tangent * position.u - rad * position.v;
+}
+
+function getRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 function render(){
   game.debug.text("Score: " + score, 16,32)
