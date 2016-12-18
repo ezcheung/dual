@@ -35,6 +35,7 @@ function preload() {
   game.load.image("player", "assets/sprites/blackcircle.png");
   game.load.image("midline", "assets/grayline.png");
   game.load.image("eBasic", "assets/sprites/redcircle.png");
+  game.load.image("eZigzag", "assets/sprites/purplecircle.png");
   game.load.image("mBasic", "assets/sprites/blue-square.png")
 
 }
@@ -269,7 +270,7 @@ function spawnBasic() {
 function spawnZigzag() {
   const speed = 300;
   let position = getSpawnPosition();
-  let newEnemy = enemyTypes["eZigzag"].create(position.x, position.y, "player"); 
+  let newEnemy = enemyTypes["eZigzag"].create(position.x, position.y, "eZigzag"); 
   newEnemy.outOfBoundsKill = true;
   let tangent = (Math.random() * 2 - 1) * speed;
   let rad = Math.sqrt(speed * speed - tangent * tangent); 
