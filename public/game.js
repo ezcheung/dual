@@ -36,6 +36,7 @@ function preload() {
   game.load.image("midline", "assets/grayline.png");
   game.load.image("eBasic", "assets/sprites/redcircle.png");
   game.load.image("eZigzag", "assets/sprites/purplecircle.png");
+  game.load.image("eTraverser", "assets/sprites/blackcircle.png")
   game.load.image("mBasic", "assets/sprites/blue-square.png")
 
 }
@@ -95,6 +96,11 @@ function create() {
   enemyTypes.eZigzag.spawn = spawnZigzag;
   game.physics.arcade.enable(enemyTypes.eZigzag);
   
+  enemyTypes.eTraverser = game.add.group();
+  enemyTypes.eTraverser.enableBody = true;
+  enemyTypes.eTraverser.spawn = spawnTraverser;
+  game.physics.arcade.enable(enemyTypes.eTraverser);
+
   for(let i in enemyTypes) {
     enemies.add(enemyTypes[i]);
   }
@@ -285,6 +291,31 @@ function spawnZigzag() {
       newEnemy.body.velocity.y = - newEnemy.body.velocity.y;
     }
   }, 250)
+}
+
+function spawnTraverser() {
+  const speed = 200;
+  let position = getSpawnPosition();
+  let newEnemy = enemyTypes["eTraverser"].create(position.x, position.y, "eTraverser");
+  newEnemy.outOfBoundsKill = true;
+  if (position.x === 0) {
+    newEnemy.body.velocity.x = speed;
+  } else if (position.x === gameSettings.length) {
+    newEnemy.body.velocity.x = - speed;
+  } else if (position.y === 0) {
+    newEnemy.body.velocity.y = speed;
+  } else if (position.x === gameSettings.length) {
+    newEnemy.body.velocity.y = - speed;
+  }
+  let traverseInterval = setInterval(() => {
+    if(!newEnemy.alive) clearInterval(traverseInterval);
+    else {
+      let tmp = newEnemy.body.velocity.x;
+      newEnemy.body.velocity.x = newEnemy.body.velocity.y;
+      newEnemy.body.velocity.y = tmp;
+    }
+  }, 300
+  );
 }
 
 function getRandom(arr) {
